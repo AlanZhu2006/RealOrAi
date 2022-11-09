@@ -1,12 +1,24 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import imgData from '../assets/data/images.json'
 
-const imgToCheck = (props) => {
+const imgToCheck = () => {
+  
+  const [imgList, setImgList] = useState(imgData)
 
-    const imgSrc = props.src
 
-  return (
-    <img src={imgSrc} />
+  useEffect(() => {
+
+    // console.log(imgList)
+    
+  }, [])
+
+
+  return (<div className='imgContainer'>
+          <img src={imgList[3].src} />
+        </div>
   )
+      
+  
 }
 
 export default imgToCheck

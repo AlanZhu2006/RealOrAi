@@ -6,8 +6,10 @@ import LiveScore from './components/scores/liveScore'
 import HighScore from './components/scores/highScore'
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [score, setScore] = useState(0)
+  const [highScore, setHighScore] = useState(0)
+    
+ 
   return (
     <div className="App">      
       {/* Componentes: 50% YES / NO
@@ -16,19 +18,17 @@ function App() {
                    High Score
        */}
       <h1>REAL OR <code>AI</code></h1>
-
-      <div className='imgContainer'>
-        <ImgToCheck src='https://lexica-serve-encoded-images.sharif.workers.dev/md/00528776-8d41-49a4-a755-aef2943e9b66'/>
-      </div>
+      
+      <ImgToCheck />
       
       <div className='buttonsRow'>
-        <AnswerButton text='REAL' onClick=''/>
-        <AnswerButton text='AI' onClick=''/>
+        <AnswerButton text='REAL' />
+        <AnswerButton text='AI' />
       </div>
 
       <div className='scoresRow'>
-        <HighScore start={0}/>
-        <LiveScore start={0}/>
+        <HighScore start={score}/>
+        <LiveScore start={highScore}/>
       </div>
 
     </div>
