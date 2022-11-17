@@ -2,10 +2,8 @@ import React from 'react'
 
 const liveScore = (props) => {
   
-  const startScore = props.start
-  
   return (
-    <div class='liveScore'>Score: {startScore}</div>
+    <div className='liveScore'>Score: {props.score}</div>
   )
 }
 

@@ -2,12 +2,10 @@ import React from 'react'
 
 const highScore = (props) => {
   
-  const startScore = props.start
-
   return (
-    <div class='highScore'>
+    <div className='highScore'>
     
-        <span>High Score: </span>1
+        <span>High Score: </span>{props.score}
         
     </div>
   )

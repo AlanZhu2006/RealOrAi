@@ -2,15 +2,10 @@ import React from 'react'
 
 const answerButton = (props) => {
 
-  console.log('render')
-
-  function handleCheckAnswer(text) {
-    
-  }
-
+  const  { check, id } = props
 
   return (
-    <button className='answerButton' onClick={() => handleCheckAnswer(props.text)}>
+    <button className='answerButton' onClick={() => props.onClickAnswer(check, id)}>
         {props.text}
     </button>
         
