@@ -24,50 +24,119 @@
   <script src="script.js"></script>
   <script src="click-colorful.js"></script>
 
-    <script>
-        // 添加按钮事件监听
-        document.addEventListener('DOMContentLoaded', function() {
-            const aiButton = document.getElementById('aiButton');
-            const realButton = document.getElementById('realButton');
+  <script>
+    // 游戏状态变量
+    let currentQuestion = 0;
+    let score = 0;
+    let currentImageType = '';
+    const totalQuestions = 10;
 
-            // 为每个按钮添加点击和触摸事件
-            [aiButton, realButton].forEach(button => {
-                // 点击事件
-                button.addEventListener('click', function(e) {
-                    const type = button.getAttribute('data-type');
-                    checkAnswer(type);
-                });
+    // 图片数据
+    const images = {
+      real: [
+        'real pictures/pexels-nitin-dhumal-46710.jpg',
+        'real pictures/pexels-nout-gons-378570.jpg',
+        // ... 添加其他真实图片
+      ],
+      ai: [
+        // 添加 AI 生成的图片路径
+      ]
+    };
 
-                // 触摸事件
-                button.addEventListener('touchend', function(e) {
-                    e.preventDefault(); // 防止触发点击事件
-                    const type = button.getAttribute('data-type');
-                    checkAnswer(type);
-                }, { passive: false });
-            });
+    // 初始化游戏
+    function initGame() {
+      currentQuestion = 0;
+      score = 0;
+      loadNextQuestion();
+    }
+
+    // 加载下一个问题
+    function loadNextQuestion() {
+      if (currentQuestion >= totalQuestions) {
+        endGame();
+        return;
+      }
+
+      // 随机选择显示 AI 或真实图片
+      currentImageType = Math.random() < 0.5 ? 'ai' : 'real';
+      const imageArray = images[currentImageType];
+      const randomIndex = Math.floor(Math.random() * imageArray.length);
+      
+      document.getElementById('game-image').src = imageArray[randomIndex];
+      document.getElementById('progress').textContent = `Question ${currentQuestion + 1} of ${totalQuestions}`;
+      document.getElementById('feedback').textContent = '';
+    }
+
+    // 检查答案
+    function checkAnswer(answer) {
+      const isCorrect = answer === currentImageType;
+      const feedback = document.getElementById('feedback');
+      
+      if (isCorrect) {
+        score++;
+        feedback.textContent = 'Correct!';
+        feedback.style.color = 'green';
+      } else {
+        feedback.textContent = 'Wrong!';
+        feedback.style.color = 'red';
+      }
+
+      document.getElementById('score').textContent = `Score: ${score}`;
+      currentQuestion++;
+      
+      setTimeout(loadNextQuestion, 1000);
+    }
+
+    // 游戏结束
+    function endGame() {
+      const container = document.querySelector('.game-container');
+      container.innerHTML = `
+        <h1>Game Over!</h1>
+        <p>Final Score: ${score} / ${totalQuestions}</p>
+        <button onclick="location.reload()">Play Again</button>
+      `;
+    }
+
+    // 页面加载完成后初始化游戏
+    document.addEventListener('DOMContentLoaded', function() {
+      const aiButton = document.getElementById('aiButton');
+      const realButton = document.getElementById('realButton');
+
+      [aiButton, realButton].forEach(button => {
+        button.addEventListener('click', function(e) {
+          const type = button.getAttribute('data-type');
+          checkAnswer(type);
         });
 
-        // 处理点击事件
-        function playColor(e) {
-            requestAnimationFrame(() => {
-                var color = new colorBall();
-                color.fly(e.clientX || e.touches[0].clientX, e.clientY || e.touches[0].clientY);
-            });
-        }
+        button.addEventListener('touchend', function(e) {
+          e.preventDefault();
+          const type = button.getAttribute('data-type');
+          checkAnswer(type);
+        }, { passive: false });
+      });
 
-        // 处理触摸事件
-        function touchPlayColor(e) {
-            requestAnimationFrame(() => {
-                var color = new colorBall();
-                color.fly(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-            });
-            e.stopPropagation();
-            e.preventDefault();
-        }
+      initGame(); // 启动游戏
+    });
 
-        // 绑定点击和触摸事件
-        document.body.addEventListener("click", playColor);
-        document.body.addEventListener("touchstart", touchPlayColor, { passive: false });
-    </script>
+    // 彩色特效相关代码保持不变
+    function playColor(e) {
+      requestAnimationFrame(() => {
+        var color = new colorBall();
+        color.fly(e.clientX || e.touches[0].clientX, e.clientY || e.touches[0].clientY);
+      });
+    }
+
+    function touchPlayColor(e) {
+      requestAnimationFrame(() => {
+        var color = new colorBall();
+        color.fly(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+      });
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    document.body.addEventListener("click", playColor);
+    document.body.addEventListener("touchstart", touchPlayColor, { passive: false });
+  </script>
 </body>
 </html>
