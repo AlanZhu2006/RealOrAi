@@ -30,16 +30,30 @@
     let score = 0;
     let currentImageType = '';
     const totalQuestions = 10;
+    let allUsedImages = new Set(); // 使用 Set 来跟踪所有已使用的图片
 
     // 图片数据
     const images = {
       real: [
         'real pictures/pexels-nitin-dhumal-46710.jpg',
         'real pictures/pexels-nout-gons-378570.jpg',
-        // ... 添加其他真实图片
+        'real pictures/pexels-nice-guys-767239.jpg',
+        'real pictures/pexels-min-an-1087735.jpg',
+        'real pictures/pexels-mike-chai-842339.jpg',
+        'real pictures/pexels-maurício-mascaro-712786.jpg',
+        'real pictures/pexels-matheus-bertelli-573238.jpg',
+        'real pictures/pexels-marctutorials-1152359.jpg',
+        'real pictures/pexels-marcin-dampc-1684187.jpg',
+        'real pictures/pexels-george-desipris-760984.jpg',
+        'real pictures/pexels-jeshootscom-834894.jpg',
+        'real pictures/pexels-harrison-candlin-2441454.jpg',
+        'real pictures/pexels-jill-wellington-35545.jpg',
+        'real pictures/pexels-garon-piceli-852793.jpg'
       ],
       ai: [
-        // 添加 AI 生成的图片路径
+        // 这里需要添加 AI 生成的图片路径
+        // 例如：'ai pictures/ai1.jpg',
+        //      'ai pictures/ai2.jpg' 等
       ]
     };
 
@@ -47,6 +61,7 @@
     function initGame() {
       currentQuestion = 0;
       score = 0;
+      allUsedImages.clear(); // 清空已使用图片记录
       loadNextQuestion();
     }
 
@@ -57,12 +72,45 @@
         return;
       }
 
-      // 随机选择显示 AI 或真实图片
-      currentImageType = Math.random() < 0.5 ? 'ai' : 'real';
-      const imageArray = images[currentImageType];
-      const randomIndex = Math.floor(Math.random() * imageArray.length);
+      // 获取所有可用的图片
+      const allImages = {
+        real: images.real.filter(img => !allUsedImages.has(img)),
+        ai: images.ai.filter(img => !allUsedImages.has(img))
+      };
+
+      // 检查是否还有可用的图片
+      const realAvailable = allImages.real.length > 0;
+      const aiAvailable = allImages.ai.length > 0;
+
+      // 根据可用性决定图片类型
+      if (!realAvailable && !aiAvailable) {
+        console.error('No more unused images available');
+        endGame();
+        return;
+      } else if (!aiAvailable) {
+        currentImageType = 'real';
+      } else if (!realAvailable) {
+        currentImageType = 'ai';
+      } else {
+        currentImageType = Math.random() < 0.5 ? 'ai' : 'real';
+      }
+
+      // 从选定类型中随机选择一张未使用的图片
+      const availableImages = allImages[currentImageType];
+      const randomIndex = Math.floor(Math.random() * availableImages.length);
+      const selectedImage = availableImages[randomIndex];
       
-      document.getElementById('game-image').src = imageArray[randomIndex];
+      // 记录这张图片已被使用
+      allUsedImages.add(selectedImage);
+      
+      const img = document.getElementById('game-image');
+      img.onerror = function() {
+        console.error(`Failed to load image: ${selectedImage}`);
+        allUsedImages.delete(selectedImage); // 如果加载失败，从已使用集合中移除
+        loadNextQuestion();
+      };
+      
+      img.src = selectedImage;
       document.getElementById('progress').textContent = `Question ${currentQuestion + 1} of ${totalQuestions}`;
       document.getElementById('feedback').textContent = '';
     }

@@ -14,8 +14,44 @@ const images = [
     { src: "fake pictures/DM_20241210225336_011.webp", type: "ai" },
     { src: "fake pictures/DM_20241210225336_012.webp", type: "ai" },
     { src: "fake pictures/DM_20241210225336_013.jpg", type: "ai" },
+    { src: "fake pictures/image copy.png", type: "ai" },
+    { src: "fake pictures/image copy 2.png", type: "ai" },
+    { src: "fake pictures/image copy 3.png", type: "ai" },
+    { src: "fake pictures/image copy 4.png", type: "ai" },
+    { src: "fake pictures/image copy 5.png", type: "ai" },
+    { src: "fake pictures/image copy 6.png", type: "ai" },
+    { src: "fake pictures/image copy 7.png", type: "ai" },
+    { src: "fake pictures/image copy 8.png", type: "ai" },
+    { src: "fake pictures/image copy 9.png", type: "ai" },
+    { src: "fake pictures/image copy 10.png", type: "ai" },
+    { src: "fake pictures/image copy 11.png", type: "ai" },
+    { src: "fake pictures/image copy 12.png", type: "ai" },
+    { src: "fake pictures/image copy 13.png", type: "ai" },
+    { src: "fake pictures/image copy 14.png", type: "ai" },
+    { src: "fake pictures/image copy 15.png", type: "ai" },
+    { src: "fake pictures/image copy 16.png", type: "ai" },
+    { src: "fake pictures/image copy 17.png", type: "ai" },
+    { src: "fake pictures/image copy 18.png", type: "ai" },
+    { src: "fake pictures/image copy 19.png", type: "ai" },
+    { src: "fake pictures/image copy 20.png", type: "ai" },
+    { src: "fake pictures/image copy 21.png", type: "ai" },
+    { src: "fake pictures/image copy 22.png", type: "ai" },
+    { src: "fake pictures/image copy 23.png", type: "ai" },
+    { src: "fake pictures/image copy 24.png", type: "ai" },
+    { src: "fake pictures/image copy 25.png", type: "ai" }, 
+    { src: "fake pictures/image copy 26.png", type: "ai" },
+    { src: "fake pictures/image copy 27.png", type: "ai" },
+    { src: "fake pictures/image copy 28.png", type: "ai" },
+    { src: "fake pictures/image copy 29.png", type: "ai" },
+    { src: "fake pictures/image copy 30.png", type: "ai" },
+    { src: "fake pictures/image copy 31.png", type: "ai" },
+    
+    
+
     // 真实图片
-    { src: "real pictures/6.jpg", type: "real" },
+    { src: "real pictures/image copy 2.png", type: "real" },
+    { src: "real pictures/image copy 3.png", type: "real" },
+    { src: "real pictures/image copy 4.png", type: "real" },
     { src: "real pictures/23.jpg", type: "real" },
     { src: "real pictures/30.jpg", type: "real" },
     { src: "real pictures/35.jpg", type: "real" },
@@ -68,7 +104,6 @@ const images = [
     { src: "real pictures/pexels-snapwire-227675.jpg", type: "real" },
     { src: "real pictures/pexels-victor-freitas-772665.jpg", type: "real" },
     { src: "real pictures/pexels-ylanite-koppens-1209610.jpg", type: "real" },
-    { src: "real pictures/preview.gif", type: "real" }
 ];
   
   let currentImageIndex = 0;
