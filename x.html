@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI or Real Picture Game</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="game-container">
+    <h1>AI or Real Picture?</h1>
+
+    <div class="image-container">
+      <img id="game-image" src="" alt="Game Image">
+    </div>
+    <div class="buttons">
+      <button onclick="checkAnswer('ai')">AI Generated</button>
+      <button onclick="checkAnswer('real')">Real Picture</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <div class="score" id="score">Score: 0</div>
+  </div>
+  <script src="script.js"></script>
+  <script src="click-colorful.js"></script>
+
+    <script>
+        // 处理点击事件
+        function playColor(e) {
+            // 使用 requestAnimationFrame 确保高效处理动画
+            requestAnimationFrame(() => {
+                var color = new colorBall();
+                color.fly(e.clientX, e.clientY);
+            });
+        }
+
+        // 处理触摸事件
+        function touchPlayColor(e) {
+            // 使用 requestAnimationFrame 确保高效处理动画
+            requestAnimationFrame(() => {
+                var color = new colorBall();
+                color.fly(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+            });
+            e.stopPropagation();
+            e.preventDefault();
+        }
+
+    
+
+        // 绑定点击和触摸事件
+        document.body.addEventListener("click", playColor);
+        document.body.addEventListener("touchstart", touchPlayColor, { passive: false });
+    </script>
+</body>
+</html>

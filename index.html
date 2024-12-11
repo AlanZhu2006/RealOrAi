@@ -1,13 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <link rel="icon" href="1.webp">
+    <style>
+        /* 页面和背景样式 */
+        body, html, .main {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            position: relative; /* 让内容与背景层不互相干扰 */
+        }
+
+        /* 动态背景容器 */
+        .animated-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            z-index: -1; /* 背景保持在最底层 */
+            background: linear-gradient(135deg, 
+                #ff9a9e, #fad0c4, #fbc2eb, #a18cd1, #8ec5fc, 
+                #e0c3fc, #9be15d, #ff7e5f, #feb47b, #ff6e7f);
+            background-size: 400% 400%;
+            animation: smoothFlow 40s linear infinite;
+        }
+
+        /* 动画效果 */
+        @keyframes smoothFlow {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        /* 内容样式 */
+        .content {
+            position: relative;
+            display: grid;
+            place-items: center;
+            height: 100%;
+            color: white;
+            text-align: center;
+            z-index: 1; /* 确保内容在背景层上方 */
+            padding: 10px;
+        }
+
+        /* 标题样式 */
+        h1 {
+            font-size: 3rem;
+            font-weight: 600;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+            letter-spacing: 1px;
+        }
+
+        /* 文本样式 */
+        p {
+            font-size: 1.25rem;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+            letter-spacing: 0.5px;
+        }
+
+        /* 按钮样式 */
+        button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            background-color: rgba(255, 255, 255, 0.6); /* 更亮的按钮背景 */
+            border: none;
+            color: #333;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: rgba(255, 255, 255, 1);
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        button:focus {
+            outline: none;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Real or AI</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+    
+</head>
+
+<body>
+    
+    <div class="content">
+        <h1>Welcome to Real or AI game</h1>
+        <p>Explore the truth and illusion reflecting madness and reason</p>
+        <button onclick="window.location.href='x.html'">Get Started</button>
+    </div>
+
+    <!-- 动态背景 -->
+    <div class="animated-bg"></div>
+
+    <script src="click-colorful.js"></script>
+
+    <script>
+        // 处理点击事件
+        function playColor(e) {
+            // 使用 requestAnimationFrame 确保高效处理动画
+            requestAnimationFrame(() => {
+                var color = new colorBall();
+                color.fly(e.clientX, e.clientY);
+            });
+        }
+
+        // 处理触摸事件
+        function touchPlayColor(e) {
+            // 使用 requestAnimationFrame 确保高效处理动画
+            requestAnimationFrame(() => {
+                var color = new colorBall();
+                color.fly(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+            });
+            e.stopPropagation();
+            e.preventDefault();
+        }
+
+    
+
+        // 绑定点击和触摸事件
+        document.body.addEventListener("click", playColor);
+        document.body.addEventListener("touchstart", touchPlayColor, { passive: false });
+    </script>
+</body>
 </html>
