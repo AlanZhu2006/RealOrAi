@@ -73,18 +73,21 @@ const images = [
   
   let currentImageIndex = 0;
   let score = 0;
-  const GAME_ROUNDS = 10; // 设置游戏回合数
   let currentRound = 0;
+  const TOTAL_ROUNDS = 10;
+  let wrongAnswers = []; // 记录错误的题目
   
   function loadRandomImage() {
     const gameImage = document.getElementById("game-image");
+    const progressText = document.getElementById("progress");
     currentImageIndex = Math.floor(Math.random() * images.length);
     
-    // 添加加载状态
+    // 更新进度
+    progressText.textContent = `Question ${currentRound + 1} of ${TOTAL_ROUNDS}`;
+    
     gameImage.style.opacity = "0.5";
     document.getElementById("feedback").textContent = "Loading...";
     
-    // 添加图片加载错误处理
     gameImage.onerror = function() {
         document.getElementById("feedback").textContent = "Error loading image!";
         gameImage.style.opacity = "1";
@@ -101,30 +104,35 @@ const images = [
   function checkAnswer(selectedType) {
     const correctType = images[currentImageIndex].type;
     const buttons = document.querySelectorAll('button');
+    const feedback = document.getElementById("feedback");
     
-    // 禁用按钮防止重复点击
     buttons.forEach(btn => btn.disabled = true);
+    feedback.classList.remove('correct', 'wrong');
     
     if (selectedType === correctType) {
         score++;
-        document.getElementById("feedback").textContent = "Correct!";
+        feedback.textContent = "Correct! ✨";
+        feedback.classList.add('correct');
     } else {
-        document.getElementById("feedback").textContent = `Wrong! It was ${correctType}`;
+        feedback.textContent = `Wrong! It was ${correctType} 😅`;
+        feedback.classList.add('wrong');
+        // 记录错误的题目
+        wrongAnswers.push({
+            image: images[currentImageIndex].src,
+            selected: selectedType,
+            correct: correctType
+        });
     }
     
-    document.getElementById("score").textContent = `Score: ${score}`;
+    feedback.style.animation = 'pulse 0.5s ease';
+    setTimeout(() => feedback.style.animation = '', 500);
+    
+    updateScore();
     currentRound++;
     
-    if (currentRound >= GAME_ROUNDS) {
-        // 游戏结束
-        setTimeout(() => {
-            const playAgain = confirm(`Game Over! Your final score is ${score}/${GAME_ROUNDS}. Play again?`);
-            if (playAgain) {
-                resetGame();
-            }
-        }, 1000);
+    if (currentRound >= TOTAL_ROUNDS) {
+        showGameSummary();
     } else {
-        // 继续游戏
         setTimeout(() => {
             buttons.forEach(btn => btn.disabled = false);
             loadRandomImage();
@@ -132,13 +140,81 @@ const images = [
     }
   }
   
+  function updateScore() {
+    const scoreElement = document.getElementById("score");
+    const accuracy = (score / (currentRound + 1) * 100).toFixed(1);
+    scoreElement.textContent = `Score: ${score}/${currentRound + 1} (${accuracy}%)`;
+  }
+  
+  function showGameSummary() {
+    const accuracy = (score / TOTAL_ROUNDS * 100).toFixed(1);
+    const gameContainer = document.querySelector('.game-container');
+    
+    // 创建总结界面
+    const summaryHTML = `
+        <div class="summary">
+            <h2>Game Over!</h2>
+            <p class="final-score">Final Score: ${score}/${TOTAL_ROUNDS}</p>
+            <p class="accuracy">Accuracy: ${accuracy}%</p>
+            <p class="wrong-count">Wrong Answers: ${wrongAnswers.length}</p>
+            <div class="summary-buttons">
+                <button onclick="resetGame()" class="restart-btn">Play Again</button>
+                <button onclick="showWrongAnswers()" class="review-btn">Review Mistakes</button>
+            </div>
+        </div>
+    `;
+    
+    gameContainer.innerHTML = summaryHTML;
+  }
+  
+  function showWrongAnswers() {
+    const gameContainer = document.querySelector('.game-container');
+    let wrongAnswersHTML = `
+        <div class="wrong-answers">
+            <h2>Your Mistakes</h2>
+            <div class="mistakes-list">
+                ${wrongAnswers.map((wrong, index) => `
+                    <div class="mistake-item">
+                        <p>Question ${index + 1}</p>
+                        <img src="${wrong.image}" alt="Question image">
+                        <p>You selected: ${wrong.selected}</p>
+                        <p>Correct answer: ${wrong.correct}</p>
+                    </div>
+                `).join('')}
+            </div>
+            <button onclick="resetGame()" class="restart-btn">Play Again</button>
+        </div>
+    `;
+    
+    gameContainer.innerHTML = wrongAnswersHTML;
+  }
+  
   function resetGame() {
     score = 0;
     currentRound = 0;
-    document.getElementById("score").textContent = "Score: 0";
+    wrongAnswers = [];
+    
+    // 重置游戏界面
+    const gameContainer = document.querySelector('.game-container');
+    gameContainer.innerHTML = `
+        <h1>AI or Real Picture?</h1>
+        <div id="progress">Question 1 of ${TOTAL_ROUNDS}</div>
+        <div class="image-container">
+            <img id="game-image" src="" alt="Game Image">
+        </div>
+        <div class="buttons">
+            <button onclick="checkAnswer('ai')">AI Generated</button>
+            <button onclick="checkAnswer('real')">Real Picture</button>
+        </div>
+        <div class="feedback" id="feedback"></div>
+        <div class="score" id="score">Score: 0/0 (0%)</div>
+    `;
+    
     loadRandomImage();
   }
   
-  // Initialize game
-  loadRandomImage();
+  // 初始化游戏
+  window.onload = function() {
+    resetGame();
+  };
   
