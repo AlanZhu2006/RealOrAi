@@ -87,7 +87,9 @@
         }
     </style>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Real or AI</title>
     
 </head>
@@ -97,7 +99,7 @@
     <div class="content">
         <h1>Welcome to Real or AI game</h1>
         <p>Explore the truth and illusion reflecting madness and reason</p>
-        <button onclick="window.location.href='x.html'">Get Started</button>
+        <button onclick="startGame()">Get Started</button>
     </div>
 
     <!-- 动态背景 -->
@@ -126,7 +128,25 @@
             e.preventDefault();
         }
 
-    
+        function startGame() {
+            try {
+                // 使用相对路径
+                window.location.assign('./x.html');
+            } catch (error) {
+                console.error('Navigation error:', error);
+                // 备用方案
+                window.location.href = './x.html';
+            }
+        }
+
+        // 添加触摸事件支持
+        document.addEventListener('DOMContentLoaded', function() {
+            const startButton = document.querySelector('button');
+            startButton.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                startGame();
+            });
+        });
 
         // 绑定点击和触摸事件
         document.body.addEventListener("click", playColor);

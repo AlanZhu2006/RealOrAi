@@ -196,4 +196,53 @@ button:disabled {
     border-radius: 8px;
     margin: 10px 0;
 }
+
+/* 添加移动端适配样式 */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .game-container {
+        margin: 10px auto;
+        padding: 15px;
+    }
+
+    .image-container {
+        height: 400px; /* 移动端减小高度 */
+    }
+
+    .buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .buttons button {
+        width: 100%;
+        padding: 12px 20px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    .feedback {
+        font-size: 20px;
+    }
+
+    .score {
+        font-size: 16px;
+    }
+}
+
+/* 防止移动端点击延迟 */
+* {
+    touch-action: manipulation;
+}
+
+/* 改善移动端按钮体验 */
+button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
   
