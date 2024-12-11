@@ -102,41 +102,63 @@
       const aiButton = document.getElementById('aiButton');
       const realButton = document.getElementById('realButton');
 
+      function handleInput(button) {
+        const type = button.getAttribute('data-type');
+        checkAnswer(type);
+      }
+
+      // 为每个按钮添加事件监听
       [aiButton, realButton].forEach(button => {
-        button.addEventListener('click', function(e) {
-          const type = button.getAttribute('data-type');
-          checkAnswer(type);
-        });
+        // 移动端触摸事件
+        button.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+        }, { passive: false });
 
         button.addEventListener('touchend', function(e) {
           e.preventDefault();
-          const type = button.getAttribute('data-type');
-          checkAnswer(type);
+          handleInput(this);
         }, { passive: false });
+
+        // PC端点击事件
+        button.addEventListener('click', function(e) {
+          // 检查是否是真实的点击事件，而不是触摸事件触发的点击
+          if (e.pointerType !== 'touch' && e.pointerType !== 'pen') {
+            handleInput(this);
+          }
+        });
       });
 
       initGame(); // 启动游戏
     });
 
-    // 彩色特效相关代码保持不变
+    // 彩色特效相关代码
     function playColor(e) {
+      // 检查是否是触摸事件
+      const x = e.touches ? e.touches[0].clientX : e.clientX;
+      const y = e.touches ? e.touches[0].clientY : e.clientY;
+      
       requestAnimationFrame(() => {
         var color = new colorBall();
-        color.fly(e.clientX || e.touches[0].clientX, e.clientY || e.touches[0].clientY);
+        color.fly(x, y);
       });
     }
 
     function touchPlayColor(e) {
+      e.preventDefault();
       requestAnimationFrame(() => {
         var color = new colorBall();
         color.fly(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
       });
-      e.stopPropagation();
-      e.preventDefault();
     }
 
-    document.body.addEventListener("click", playColor);
-    document.body.addEventListener("touchstart", touchPlayColor, { passive: false });
+    // 绑定彩色特效事件
+    if ('ontouchstart' in window) {
+      // 移动设备
+      document.body.addEventListener('touchstart', touchPlayColor, { passive: false });
+    } else {
+      // PC设备
+      document.body.addEventListener('click', playColor);
+    }
   </script>
 </body>
 </html>
