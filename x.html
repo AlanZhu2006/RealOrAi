@@ -25,57 +25,75 @@
   <script src="script.js"></script>
   <script src="click-colorful.js"></script>
   <script>
-    // 处理点击事件
-    function playColor(e) {
-      requestAnimationFrame(() => {
-        var color = new colorBall();
-        color.fly(e.clientX, e.clientY);
-      });
-    }
-
-    // 处理触摸事件
-    function touchPlayColor(e) {
-      requestAnimationFrame(() => {
-        var color = new colorBall();
-        color.fly(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-      });
-      e.stopPropagation();
-      e.preventDefault();
-    }
-
-    // 绑定全局特效事件
-    document.body.addEventListener("click", playColor);
-    document.body.addEventListener("touchstart", touchPlayColor, { passive: false });
-
-    // 等待 script.js 加载完成后再初始化游戏
-    window.addEventListener('load', function() {
+    document.addEventListener('DOMContentLoaded', function() {
       const aiButton = document.getElementById('aiButton');
       const realButton = document.getElementById('realButton');
 
-      // 按钮点击处理
-      function handleButtonClick(button, e) {
+      // 处理点击特效
+      function playColor(e) {
+        if (e.target.tagName === 'BUTTON') return;
+        requestAnimationFrame(() => {
+          var color = new colorBall();
+          color.fly(e.clientX, e.clientY);
+        });
+      }
+
+      // 处理触摸特效
+      function touchPlayColor(e) {
+        if (e.target.tagName === 'BUTTON') return;
+        requestAnimationFrame(() => {
+          var color = new colorBall();
+          color.fly(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+        });
         e.preventDefault();
+      }
+
+      // 按钮点击处理
+      function handleButtonClick(button) {
         const type = button.getAttribute('data-type');
         checkAnswer(type);
+        
+        // 在按钮中心创建特效
+        const rect = button.getBoundingClientRect();
+        requestAnimationFrame(() => {
+          var color = new colorBall();
+          color.fly(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        });
       }
 
       // 为按钮添加事件监听
       [aiButton, realButton].forEach(button => {
+        // 移动端触摸事件
+        button.addEventListener('touchstart', function(e) {
+          e.preventDefault(); // 阻止默认行为
+        }, { passive: false });
+
         button.addEventListener('touchend', function(e) {
           e.preventDefault();
-          handleButtonClick(button, e);
-        });
+          e.stopPropagation();
+          handleButtonClick(this);
+        }, { passive: false });
 
+        // PC端点击事件
         button.addEventListener('click', function(e) {
-          handleButtonClick(button, e);
+          if (!e.touches) { // 确保是真实的鼠标点击
+            handleButtonClick(this);
+          }
         });
       });
+
+      // 全局特效事件
+      if ('ontouchstart' in window) {
+        // 移动设备
+        document.body.addEventListener('touchstart', touchPlayColor, { passive: false });
+      } else {
+        // PC设备
+        document.body.addEventListener('click', playColor);
+      }
 
       // 初始化游戏
       if (typeof initGame === 'function') {
         initGame();
-      } else {
-        console.error('Game initialization failed: initGame function not found');
       }
     });
   </script>
