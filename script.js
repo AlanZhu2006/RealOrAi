@@ -51,7 +51,6 @@ const images = [
     // 真实图片
     { src: "real pictures/image copy 2.png", type: "real" },
     { src: "real pictures/image copy 3.png", type: "real" },
-    { src: "real pictures/image copy 4.png", type: "real" },
     { src: "real pictures/23.jpg", type: "real" },
     { src: "real pictures/30.jpg", type: "real" },
     { src: "real pictures/35.jpg", type: "real" },
@@ -91,19 +90,8 @@ const images = [
     { src: "real pictures/pexels-nubia-navarro-(nubikini)-386000.jpg", type: "real" },
     { src: "real pictures/pexels-peter-fazekas-1170572.jpg", type: "real" },
     { src: "real pictures/pexels-peter-fazekas-1170594.jpg", type: "real" },
-    { src: "real pictures/pexels-picjumbocom-196652.jpg", type: "real" },
-    { src: "real pictures/pexels-pineapple-supply-co-137132.jpg", type: "real" },
-    { src: "real pictures/pexels-pixabay-34291.jpg", type: "real" },
-    { src: "real pictures/pexels-pixabay-210158.jpg", type: "real" },
-    { src: "real pictures/pexels-pixabay-236171.jpg", type: "real" },
-    { src: "real pictures/pexels-pixabay-262347.jpg", type: "real" },
-    { src: "real pictures/pexels-pok-rie-5365875.jpg", type: "real" },
-    { src: "real pictures/pexels-s-migaj-747964.jpg", type: "real" },
-    { src: "real pictures/pexels-sam-kolder-2387873.jpg", type: "real" },
-    { src: "real pictures/pexels-scott-webb-136412.jpg", type: "real" },
-    { src: "real pictures/pexels-snapwire-227675.jpg", type: "real" },
-    { src: "real pictures/pexels-victor-freitas-772665.jpg", type: "real" },
-    { src: "real pictures/pexels-ylanite-koppens-1209610.jpg", type: "real" },
+    { src: "real pictures/pexels-picjumbocom-196652.jpg", type: "real" }
+    
 ];
   
   let currentImageIndex = 0;
