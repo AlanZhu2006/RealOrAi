@@ -286,6 +286,47 @@ button:disabled {
     .mistake-item {
         padding: 10px;
     }
+
+    /* 改善移动端按钮触摸体验 */
+    .buttons button {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .buttons button::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.2);
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    .buttons button:active::after {
+        opacity: 1;
+    }
+
+    /* 禁用按钮悬停效果 */
+    .buttons button:hover {
+        transform: none;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+}
+
+/* 添加触摸反馈 */
+.buttons button:active {
+    transform: scale(0.98);
+}
+
+/* 确保按钮在禁用状态下不会有任何动画 */
+.buttons button:disabled {
+    transform: none !important;
+    animation: none !important;
 }
 
 /* 添加小屏幕特别适配 */

@@ -15,8 +15,8 @@
       <img id="game-image" src="" alt="Game Image">
     </div>
     <div class="buttons">
-      <button onclick="checkAnswer('ai')">AI Generated</button>
-      <button onclick="checkAnswer('real')">Real Picture</button>
+      <button id="aiButton" data-type="ai">AI Generated</button>
+      <button id="realButton" data-type="real">Real Picture</button>
     </div>
     <div class="feedback" id="feedback"></div>
     <div class="score" id="score">Score: 0</div>
@@ -25,18 +25,38 @@
   <script src="click-colorful.js"></script>
 
     <script>
+        // 添加按钮事件监听
+        document.addEventListener('DOMContentLoaded', function() {
+            const aiButton = document.getElementById('aiButton');
+            const realButton = document.getElementById('realButton');
+
+            // 为每个按钮添加点击和触摸事件
+            [aiButton, realButton].forEach(button => {
+                // 点击事件
+                button.addEventListener('click', function(e) {
+                    const type = button.getAttribute('data-type');
+                    checkAnswer(type);
+                });
+
+                // 触摸事件
+                button.addEventListener('touchend', function(e) {
+                    e.preventDefault(); // 防止触发点击事件
+                    const type = button.getAttribute('data-type');
+                    checkAnswer(type);
+                }, { passive: false });
+            });
+        });
+
         // 处理点击事件
         function playColor(e) {
-            // 使用 requestAnimationFrame 确保高效处理动画
             requestAnimationFrame(() => {
                 var color = new colorBall();
-                color.fly(e.clientX, e.clientY);
+                color.fly(e.clientX || e.touches[0].clientX, e.clientY || e.touches[0].clientY);
             });
         }
 
         // 处理触摸事件
         function touchPlayColor(e) {
-            // 使用 requestAnimationFrame 确保高效处理动画
             requestAnimationFrame(() => {
                 var color = new colorBall();
                 color.fly(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
@@ -44,8 +64,6 @@
             e.stopPropagation();
             e.preventDefault();
         }
-
-    
 
         // 绑定点击和触摸事件
         document.body.addEventListener("click", playColor);
